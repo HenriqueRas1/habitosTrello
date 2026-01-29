@@ -59,7 +59,7 @@ export default function DayColumn({
       </div>
 
       {/* Habit Cards */}
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 space-y-2 overflow-y-auto">
         {filteredHabits.map((habit) => (
           <div
             key={habit.id}
@@ -68,6 +68,9 @@ export default function DayColumn({
             onDragOver={(e) => handleDragOver(e, habit.id)}
             onDragLeave={handleDragLeave}
             onDrop={(e) => handleDrop(e, habit.id)}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
             className={`${dragOverId === habit.id ? 'opacity-50' : ''}`}
           >
             <HabitCard
