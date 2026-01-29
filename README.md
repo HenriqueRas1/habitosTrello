@@ -12,11 +12,11 @@ Aplicativo de rastreamento de hábitos diários, estilo Trello. Funciona como PW
 - ✅ Criar hábitos por dia da semana
 - ✅ Marcar hábitos como "feito"
 - ✅ Checklist dentro de cada hábito
-- ✅ Arrastar e soltar para reordenar
+- ✅ Arrastar e soltar para reordenar (desktop)
 - ✅ Editar nome e cor dos hábitos
 - ✅ Sincronização em tempo real (Firebase)
 - ✅ PWA - instalar no celular como app
-- ✅ Interface mobile com swipe entre dias
+- ✅ Interface mobile otimizada com navegação por botões
 
 ---
 
@@ -149,6 +149,18 @@ Adicionar em Firebase Console → Authentication → Settings → Authorized dom
 2. Tocar no botão Compartilhar (↑)
 3. Selecionar "Adicionar à Tela de Início"
 4. Confirmar
+
+### Navegação Mobile
+- **Botões ← →** na parte inferior para trocar de dia
+- **Dots** no topo para navegação rápida
+- **Botão ⋮** no card para abrir e editar
+- **Checkbox** para marcar como feito
+
+### Atualizando o PWA
+Se o app não atualizar após um deploy:
+1. Feche completamente o app
+2. Vá em Ajustes → Safari → Limpar Histórico e Dados
+3. Delete o app da tela inicial e adicione novamente
 
 ---
 
