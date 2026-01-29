@@ -15,11 +15,9 @@ export default function Board() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   
-  // Mobile swipe state
+  // Mobile navigation state
   const todayIndex = days.findIndex(d => d.isToday);
   const [currentDayIndex, setCurrentDayIndex] = useState(todayIndex >= 0 ? todayIndex : 0);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
 
   const loading = habitsLoading || completionsLoading;
 
@@ -34,22 +32,15 @@ export default function Board() {
     setShowAddForm(true);
   };
 
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 50;
-    
-    if (diff > threshold && currentDayIndex < days.length - 1) {
-      setCurrentDayIndex(prev => prev + 1);
-    } else if (diff < -threshold && currentDayIndex > 0) {
+  const goToPrevDay = () => {
+    if (currentDayIndex > 0) {
       setCurrentDayIndex(prev => prev - 1);
+    }
+  };
+
+  const goToNextDay = () => {
+    if (currentDayIndex < days.length - 1) {
+      setCurrentDayIndex(prev => prev + 1);
     }
   };
 
@@ -101,13 +92,8 @@ export default function Board() {
         ))}
       </div>
 
-      {/* Mobile Swipe View */}
-      <div 
-        className="md:hidden flex-1 overflow-hidden"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      {/* Mobile View */}
+      <div className="md:hidden flex-1 overflow-hidden">
         <DayColumn
           day={days[currentDayIndex]}
           habits={habits}
@@ -122,6 +108,47 @@ export default function Board() {
           reorderHabits={reorderHabits}
           onAddHabit={() => openAddForm(days[currentDayIndex].key)}
         />
+      </div>
+
+      {/* Mobile Navigation Buttons */}
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-gray-800 rounded-xl mt-3">
+        <button
+          onClick={goToPrevDay}
+          disabled={currentDayIndex === 0}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            currentDayIndex === 0 
+              ? 'text-gray-600 cursor-not-allowed' 
+              : 'text-white bg-gray-700 active:bg-gray-600'
+          }`}
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="text-sm font-medium">
+            {currentDayIndex > 0 ? days[currentDayIndex - 1].label.slice(0, 3) : ''}
+          </span>
+        </button>
+
+        <span className="text-white font-semibold">
+          {days[currentDayIndex].label}
+        </span>
+
+        <button
+          onClick={goToNextDay}
+          disabled={currentDayIndex === days.length - 1}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            currentDayIndex === days.length - 1 
+              ? 'text-gray-600 cursor-not-allowed' 
+              : 'text-white bg-gray-700 active:bg-gray-600'
+          }`}
+        >
+          <span className="text-sm font-medium">
+            {currentDayIndex < days.length - 1 ? days[currentDayIndex + 1].label.slice(0, 3) : ''}
+          </span>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
 
       {/* Desktop Grid */}
